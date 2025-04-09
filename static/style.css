@@ -1,0 +1,106 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #111;
+    color: white;
+    text-align: center;
+}
+
+nav {
+    background-color: black;
+    padding: 15px;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    z-index: 1000;
+}
+
+nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+}
+
+nav ul li {
+    margin: 0 20px;
+}
+
+nav ul li a {
+    color: #f4c542;
+    text-decoration: none;
+    font-size: 18px;
+}
+
+h2 {
+    margin-top: 100px;
+    font-size: 28px;
+    text-transform: uppercase;
+}
+
+.media-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 15px; /* Reduced gap */
+    padding: 20px;
+}
+
+.media {
+    width: 350px;  /* Set width */
+    height: 200px; /* Set height */
+    background: #222;
+    padding: 8px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 6px rgba(255, 255, 255, 0.2);
+    transition: transform 0.3s ease-in-out;
+    border: 3px solid #f4c542;
+    display: flex; /* Aligns video inside */
+    justify-content: center;
+    align-items: center;
+    overflow: hidden; /* Ensures no extra space */
+}
+
+
+.media:hover {
+    transform: scale(1.05);
+}
+
+        video {
+            width: 350px;  /* Increased width for a rectangle shape */
+            height: 200px; /* Increased height for better visibility */
+            object-fit: cover; /* Ensures the video maintains a clean look */
+            border-radius: 10px;
+        }
+        
+        img {
+                width: 100%; /* Makes sure it fills the container */
+                height: 100%; /* Ensures the image covers the full container */
+                object-fit: cover; /* Makes sure the image covers without distortion */
+                border-radius: 10px; /* Keeps smooth corners */
+            }
+            
+            footer {
+                background-color: #222;
+                color: white;
+                text-align: center;
+                padding: 20px;
+                margin-top: 40px;
+            }
+            
+            footer a {
+                color: #f4c542;
+                text-decoration: none;
+                font-weight: bold;
+            }
+            
+            footer a:hover {
+                text-decoration: underline;
+            }
+            
+            .social-icons {
+                margin-top: 10px;
+            }
+            

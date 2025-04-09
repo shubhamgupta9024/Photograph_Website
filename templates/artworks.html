@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Artworks</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<header>
+    <nav>
+        <ul>
+            <li><a href="{{ url_for('films') }}">Films</a></li>
+            <li><a href="{{ url_for('projects') }}">Personal Projects</a></li>
+            <li><a href="{{ url_for('stills') }}">Stills</a></li>
+            <li><a href="{{ url_for('artworks') }}">Artworks</a></li>
+        </ul>
+    </nav>
+</header>
+<body>
+    <h2>ARTWORKS</h2>
+    <div class="media-container">
+        {% for image in media['artworks'] %}
+        <div class="media">
+            <img src="{{ image }}" alt="Artwork">
+        </div>
+        {% endfor %}
+    </div>
+    <footer>
+        <p>&copy; 2025 Photography & Film Portfolio | Shubham Gupta</p>
+        <p>Contact: <a href="mailto:your-email@example.com">your-email@example.com</a></p>
+        <div class="social-icons">
+            <a href="https://www.instagram.com" target="_blank">Instagram</a> |
+            <a href="https://www.facebook.com" target="_blank">Facebook</a> |
+            <a href="https://www.linkedin.com" target="_blank">LinkedIn</a>
+            <p>by bipin upadhyay</p>
+        </div>
+    </footer>
+</body>
+</html>
+```
