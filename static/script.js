@@ -9,3 +9,10 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 });
 ```
+<script>
+document.querySelectorAll('.media').forEach(media => {
+    media.addEventListener('click', () => {
+        media.classList.toggle('clicked');
+    });
+});
+<script/>
