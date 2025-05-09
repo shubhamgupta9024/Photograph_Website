@@ -1,3 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Stills</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <style>
+        .media-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        .media {
+            position: relative;
+            width: 300px;
+        }
+        .media img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+        .overlay-text {
+            position: absolute;
+            bottom: 0;
+            color: #fff;
+            width: 100%;
+            text-align: center;
+            padding: 5px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            font-size: 30px;
+        }
+        .media:hover .overlay-text {
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <ul>
+                <li><a href="{{ url_for('films') }}">Films</a></li>
+                <li><a href="{{ url_for('projects') }}">Personal Projects</a></li>
+                <li><a href="{{ url_for('stills') }}">Stills</a></li>
+                <li><a href="{{ url_for('artworks') }}">Artworks</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <h2>THE OUTER SPACE PROJECT</h2>
+
+    {% if not media['stills'] %}
+        <p>No still images available.</p>
+    {% else %}
+    <div class="media-container">
+        {% for image in media['stills'] %}
+        <div class="media">
+            <a href="{{ url_for('view_image', image_name=image.split('/')[-1]) }}">
+                <img src="{{ image }}" alt="Still Image">
+                <div class="overlay-text">{{ image.split('/')[-1].split('.')[0] }}</div>
+            </a>
+        </div>
+        {% endfor %}
+    </div>
+    
+    {% endif %}
+
+    <footer>
+        <p>&copy; 2025 Photography & Film Portfolio | Shubham Gupta</p>
+        <p>Contact: <a href="mailto:your-email@example.com">your-email@example.com</a></p>
+        <div class="social-icons">
+            <a href="https://www.instagram.com" target="_blank">Instagram</a> |
+            <a href="https://www.facebook.com" target="_blank">Facebook</a> |
+            <a href="https://www.linkedin.com" target="_blank">LinkedIn</a>
+        </div>
+    </footer>
+</body>
+</html>
+
+
+
+
+
+
+
 <!-- <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -36,7 +121,9 @@
 </body>
 </html> -->
 
-<!DOCTYPE html>
+
+
+<!-- <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -44,34 +131,35 @@
     <link rel="stylesheet" href="/static/style.css">
     <style>
         .media-container {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 20px;
-        }
-        .media {
-            position: relative;
-            width: 300px;
-        }
-        .media img {
-            width: 100%;
-            height: auto;
-            display: block;
-        }
-        .overlay-text {
-            position: absolute;
-            bottom: 0;
-            /* background: rgba(0, 0, 0, 0.6); */
-            color: #fff;
-            width: 100%;
-            text-align: center;
-            padding: 5px;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-            font-size: 30px;
-        }
-        .media:hover .overlay-text {
-            opacity: 1;
-        }
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+.media {
+    position: relative;
+    width: 300px;
+}
+.media img {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+.overlay-text {
+    position: absolute;
+    bottom: 0;
+    /* background: rgba(0, 0, 0, 0.6); */
+    color: #fff;
+    width: 100%;
+    text-align: center;
+    padding: 5px;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    font-size: 30px;
+}
+.media:hover .overlay-text {
+    opacity: 1;
+}
+       
     </style>
 </head>
 <body>
@@ -90,8 +178,10 @@
     <div class="media-container">
         {% for image in media['stills'] %}
         <div class="media">
-            <img src="{{ image }}" alt="Stills">
-            <div class="overlay-text">{{ image.split('/')[-1] }}</div>
+            <a href="{{ url_for('view_image', image_name=image.split('/')[-1]) }}">
+                <img src="{{ image }}" alt="Stills">
+                <div class="overlay-text">{{ image.split('/')[-1] }}</div>
+            </a>
         </div>
         {% endfor %}
     </div>
@@ -106,5 +196,81 @@
         </div>
     </footer>
 </body>
-</html>
+</html> -->
+
+
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Stills</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <style>
+        .media-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+.media {
+    position: relative;
+    width: 300px;
+}
+.media img {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+.overlay-text {
+    position: absolute;
+    bottom: 0;
+    /* background: rgba(0, 0, 0, 0.6); */
+    color: #fff;
+    width: 100%;
+    text-align: center;
+    padding: 5px;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    font-size: 30px;
+}
+.media:hover .overlay-text {
+    opacity: 1;
+}
+       
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <ul>
+                <li><a href="{{ url_for('films') }}">Films</a></li>
+                <li><a href="{{ url_for('projects') }}">Personal Projects</a></li>
+                <li><a href="{{ url_for('stills') }}">Stills</a></li>
+                <li><a href="{{ url_for('artworks') }}">Artworks</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <h2>THE OUTER SPACE PROJECT</h2>
+    <div class="media-container">
+        {% for image in media['stills'] %}
+        <div class="media">
+            <a href="{{ url_for('view_image', image_name=image.split('/')[-1]) }}">
+                <img src="{{ image }}" alt="Stills">
+                <div class="overlay-text">{{ image.split('/')[-1] }}</div>
+            </a>
+        </div>
+        {% endfor %}
+    </div>
+
+    <footer>
+        <p>&copy; 2025 Photography & Film Portfolio | Shubham Gupta</p>
+        <p>Contact: <a href="mailto:your-email@example.com">your-email@example.com</a></p>
+        <div class="social-icons">
+            <a href="https://www.instagram.com" target="_blank">Instagram</a> |
+            <a href="https://www.facebook.com" target="_blank">Facebook</a> |
+            <a href="https://www.linkedin.com" target="_blank">LinkedIn</a>
+        </div>
+    </footer>
+</body>
+</html> -->
 

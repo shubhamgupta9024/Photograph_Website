@@ -44,7 +44,7 @@ h2 {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    gap: 15px; /* Reduced gap */
+    gap: 15px; 
     padding: 20px;
 }
 
@@ -52,11 +52,11 @@ h2 {
     width: 350px;  /* Set width */
     height: 200px; /* Set height */
     background: #222;
-    padding: 8px;
+    /* padding: 8px; */
     border-radius: 10px;
     box-shadow: 0px 4px 6px rgba(255, 255, 255, 0.2);
     transition: transform 0.3s ease-in-out;
-    border: 3px solid #f4c542;
+    /* border: 3px solid #f4c542; */
     display: flex; /* Aligns video inside */
     justify-content: center;
     align-items: center;
