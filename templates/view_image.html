@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ image_name }} - View Still</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        .image-view-container {
+            text-align: center;
+            padding: 30px;
+        }
+        .image-view-container img {
+            max-width: 25%;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 0 10px #ccc;
+        }
+        .upload-form {
+            margin-top: 30px;
+        }
+        .flash {
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 4px;
+        }
+        .flash.success { background-color: #d4edda; color: #155724; }
+        .flash.error   { background-color: #f8d7da; color: #721c24; }
+    </style>
+</head>
+<body>
+
+    <div class="image-view-container">
+        <h2> {{ image_name }}</h2>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="flash {{ category }}">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <img src="{{ image }}" alt="{{ image_name }}">
+
+        {% if session.get('admin_logged_in') %}
+        <div class="upload-form">
+            <h3>Upload a New Still</h3>
+            <form method="POST" enctype="multipart/form-data">
+                <input type="file" name="file" required>
+                <button type="submit">Upload</button>
+            </form>
+        </div>
+        {% endif %}
+
+        <p><a href="{{ url_for('stills') }}">← Back to Stills Gallery</a></p>
+    </div>
+
+</body>
+</html>
