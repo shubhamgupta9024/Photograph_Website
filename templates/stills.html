@@ -10,7 +10,7 @@
 
     <style>
         .media-container {
-            display: flex;
+            display: flex;      
             flex-wrap: wrap;
             gap: 20px;
         }
@@ -78,16 +78,17 @@
     {% if not media['stills'] %}
         <p>No still images available.</p>
     {% else %}
-    <div class="media-container">
-        {% for image in media['stills'] %}
-        <div class="media">
-            <a href="{{ url_for('view_image', image_name=image.split('/')[-1]) }}">
-                <img src="{{ image }}" alt="Still Image">
-                <div class="overlay-text">{{ image.split('/')[-1].split('.')[0] }}</div>
-            </a>
-        </div>
-        {% endfor %}
+   <div class="media-container">
+    {% for image in media['stills'] %}
+    <div class="media">
+        <a href="{{ url_for('view_image', image_name=image.split('/')[-1]) }}">
+            <img src="{{ image }}" alt="Still Image">
+            <div class="overlay-text">{{ image.split('/')[-1].split('.')[0].replace('_', ' ') }}</div>
+        </a>
     </div>
+    {% endfor %}
+</div>
+
 
     <div style="display: flex; flex-wrap: wrap; gap: 15px;">
         {% for image in images %}
