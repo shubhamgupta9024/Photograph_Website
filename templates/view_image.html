@@ -77,6 +77,7 @@
         header {
             background-color: #333;
             padding: 10px 0;
+            margin-bottom: 100px;
         }
 
         .admin-note {
@@ -100,20 +101,20 @@
     </header>
 
     <div class="image-section">
-        <h2>Viewing: {{ image_name|replace_extension }}</h2>
+        <!-- <h2>Viewing: {{ image_name|replace_extension }}</h2> -->
 
         <div class="image-block">
-            <h3>Main Image</h3>
+            <!-- <h3>Main Image</h3> -->
             <img src="{{ image }}" alt="{{ image_name }}">
         </div>
 
         <div class="image-block">
-            <h3>Related Images</h3>
+            <!-- <h3>Related Images</h3> -->
             {% if images %}
                 {% for img in images %}
                     <div class="image-block">
                         <img src="{{ img }}" alt="Related Image">
-                        <div class="related-caption">{{ img.split('/')[-1].split('.')[0] }}</div>
+                        <!-- <div class="related-caption">{{ img.split('/')[-1].split('.')[0] }}</div> -->
                     </div>
                 {% endfor %}
             {% else %}
