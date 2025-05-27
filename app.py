@@ -1,11 +1,16 @@
 from flask import Flask, render_template, request, redirect, url_for, flash, session, abort
-import os
+from flask_sqlalchemy import SQLAlchemy
 from werkzeug.utils import secure_filename
+import os
 
 app = Flask(__name__)
 app.secret_key = "your_secret_key"
 
-print(">>> Flask app is running...")
+# Configure your Neon DB connection string
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://neondb_owner:npg_v0uxLU7CeoDt@ep-cold-term-a8gmm3bc-pooler.eastus2.azure.neon.tech/neondb?sslmode=require'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
+db = SQLAlchemy(app)
 
 UPLOAD_FOLDER = 'static/uploads'
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
@@ -22,6 +27,18 @@ for category in CATEGORIES:
     os.makedirs(os.path.join(UPLOAD_FOLDER, category), exist_ok=True)
 
 
+# Database Model
+class UploadedFile(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    filename = db.Column(db.String(255), nullable=False)
+    category = db.Column(db.String(50), nullable=False)
+    upload_time = db.Column(db.DateTime, server_default=db.func.now())
+
+    def __repr__(self):
+        return f"<UploadedFile {self.filename}>"
+
+
+# Helper functions
 def get_media_files(exclude_still=None):
     media = {category: [] for category in CATEGORIES}
     for category, extensions in CATEGORIES.items():
@@ -57,6 +74,7 @@ def get_related_images(image_name):
     return related
 
 
+# Routes
 @app.route('/')
 def home():
     return render_template('website.html', media=get_media_files())
@@ -75,10 +93,7 @@ def projects():
 @app.route('/stills')
 def stills():
     media = get_media_files()
-    media['stills'] = [
-        img for img in media['stills']
-        if 'related' not in os.path.basename(img).lower()
-    ]
+    media['stills'] = [img for img in media['stills'] if 'related' not in os.path.basename(img).lower()]
     return render_template('stills.html', media=media)
 
 
@@ -100,8 +115,7 @@ def view_image(image_name):
     all_files = os.listdir(folder)
     related_images = [
         url_for('static', filename=f'uploads/stills/{f}')
-        for f in all_files
-        if f.startswith(f"{base_name}related")
+        for f in all_files if f.startswith(f"{base_name}related")
     ]
 
     return render_template(
@@ -145,7 +159,6 @@ def admin_panel():
         else:
             filename = original_filename
 
-        # Prevent overwriting existing files (optional)
         save_path = os.path.join(app.config['UPLOAD_FOLDER'], category, filename)
         counter = 1
         while os.path.exists(save_path):
@@ -156,12 +169,16 @@ def admin_panel():
 
         file.save(save_path)
 
+        # Save file metadata to Neon DB
+        new_file = UploadedFile(filename=filename, category=category)
+        db.session.add(new_file)
+        db.session.commit()
+
         flash("File uploaded successfully!", "success")
         return redirect(url_for('admin_panel'))
 
     still_images = [
-        f for f in os.listdir(os.path.join(app.config['UPLOAD_FOLDER'], 'stills'))
-        if not 'related' in f
+        f for f in os.listdir(os.path.join(app.config['UPLOAD_FOLDER'], 'stills')) if 'related' not in f
     ]
 
     return render_template('admin.html', media=get_media_files(), still_images=still_images)
@@ -181,6 +198,11 @@ def delete_file(category, filename):
     if os.path.exists(filepath):
         os.remove(filepath)
         flash("File deleted successfully!", "success")
+        # Remove from DB
+        file_entry = UploadedFile.query.filter_by(filename=filename, category=category).first()
+        if file_entry:
+            db.session.delete(file_entry)
+            db.session.commit()
     else:
         flash("File not found!", "error")
 
