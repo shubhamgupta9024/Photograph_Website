@@ -1,125 +1,139 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
+    <meta charset="UTF-8" />
     <title>Films</title>
-    <link rel="stylesheet" href="/static/style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="/static/style.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <style>
+        .media-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+            margin-top: 100px;
+        }
 
+        .media {
+            position: relative;
+            width: 300px;
+            max-height: 500px; /* to accommodate tall vertical videos */
+            overflow: hidden;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.3);
+            background: black;
+        }
+
+        .media video {
+            width: 100%;
+            height: auto; /* maintain aspect ratio */
+            max-height: 500px; /* limit video height */
+            display: block;
+            object-fit: contain; /* important: keep entire video visible */
+            background: black;
+        }
+
+        .overlay-text {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            color: white;
+            font-size: 1.5rem;
+            font-weight: bold;
+            background: rgba(0, 0, 0, 0.4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 10px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .media:hover .overlay-text {
+            opacity: 1;
+        }
+
+        .play-button {
+            position: absolute;
+            bottom: 15px;
+            right: 15px;
+            background-color: rgba(255, 255, 255, 0.7);
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .play-button:hover {
+            background-color: rgb(249, 219, 70);
+        }
+
+        /* Optional: center container vertically if you want */
+        body, html {
+            margin: 0; padding: 0;
+            height: 100%;
+            background: #121212;
+            color: white;
+            font-family: Arial, sans-serif;
+        }
+    </style>
 </head>
 <nav>
     <ul>
+        <li><a href="{{ url_for('stills') }}">Stills</a></li>
         <li><a href="{{ url_for('films') }}">Films</a></li>
         <li><a href="{{ url_for('projects') }}">Personal Projects</a></li>
-        <li><a href="{{ url_for('stills') }}">Stills</a></li>
-        <li><a href="{{ url_for('artworks') }}">Artworks</a></li>
+        <li><a href="{{ url_for('artworks') }}">About Us</a></li>
     </ul>
 </nav>
 <body>
- 
-   <div class="media-container">
-    {% for video in media['films'] %}
-    <div class="media">
-        <video id="video-{{ loop.index }}" src="{{ video }}" muted loop playsinline></video>
-        <div class="overlay-text">
-            {{ video.split('/')[-1].split('.')[0].replace('_', ' ').title() }}
+    <div class="media-container">
+        {% for video in media['films'] %}
+        <div class="media">
+            <video
+                id="video-{{ loop.index }}"
+                src="{{ video }}"
+                muted
+                loop
+                playsinline
+                controls
+            ></video>
+            <div class="overlay-text">
+                {{ video.split('/')[-1].split('.')[0].replace('_', ' ').title() }}
+            </div>
+            <button class="play-button" onclick="togglePlayPause('video-{{ loop.index }}', this)">▶</button>
         </div>
-        <button class="play-button" onclick="togglePlayPause('video-{{ loop.index }}', this)">▶</button>
+        {% endfor %}
     </div>
-    {% endfor %}
-</div>
 
-
-<style>
-    .media-container {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
-    justify-content: center;
-    margin-top: 100px;
-}
-
-.media {
-    position: relative;
-    width: 300px;
-    height: 300px;
-    overflow: hidden;
-}
-
-.media video {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
-}
-
-.overlay-text {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    color: white;
-    font-size: 1.5rem;
-    font-weight: bold;
-    background: rgba(0, 0, 0, 0.4);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    padding: 10px;
-    opacity: 0;
-    transition: opacity 0.3s ease;
-}
-
-.media:hover .overlay-text {
-    opacity: 1;
-}
-
-.play-button {
-    position: absolute;
-    bottom: 15px;
-    right: 15px;
-    background-color: rgba(255, 255, 255, 0.7);
-    border: none;
-    border-radius: 50%;
-    width: 40px;
-    height: 40px;
-    font-size: 18px;
-    font-weight: bold;
-    cursor: pointer;
-    transition: background 0.3s ease;
-}
-
-.play-button:hover {
-    background-color: rgb(249, 219, 70);
-}
-
-</style>
-
-     <footer>
+    <footer>
         <p>&copy; 2025 Photography & Film Portfolio | Mustafa Khan</p>
         <p>Contact: <a href="mailto:81khanmustafa@gmail.com">81khanmustafa@gmail.com</a></p>
         <div class="social-icons">
             <a href="https://www.instagram.com/khan.mustafa" target="_blank" title="Instagram">
                 <i class="fab fa-instagram"></i>
             </a>
-          
-            </a>
         </div>
     </footer>
-    <script>
-function togglePlayPause(videoId, button) {
-    const video = document.getElementById(videoId);
-    if (video.paused) {
-        video.play();
-        button.textContent = '⏸';
-    } else {
-        video.pause();
-        button.textContent = '▶';
-    }
-}
-</script>
 
+    <script>
+        function togglePlayPause(videoId, button) {
+            const video = document.getElementById(videoId);
+            if (video.paused) {
+                video.play();
+                button.textContent = '⏸';
+            } else {
+                video.pause();
+                button.textContent = '▶';
+            }
+        }
+    </script>
 </body>
 </html>

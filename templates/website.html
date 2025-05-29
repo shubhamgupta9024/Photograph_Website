@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -28,38 +28,37 @@
             </video>
         </div>
         {% endfor %}
-    </div>
-    <!DOCTYPE html>
-    <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Photography & Film Portfolio</title>
-        <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-    </head>
-    <body>
-    
-        <header>
-            <nav>
-                <ul>
-                    <li><a href="{{ url_for('films') }}">Films</a></li>
-                    <li><a href="{{ url_for('projects') }}">Personal Projects</a></li>
-                    <li><a href="{{ url_for('stills') }}">Stills</a></li>
-                    <li><a href="{{ url_for('artworks') }}">Artworks</a></li>
-                </ul>
-            </nav>
-        </header>
-    
-    
-         <footer>
-        <p>&copy; 2025 Photography & Film Portfolio | Mustafa Khan</p>
-        <p>Contact: <a href="mailto:81khanmustafa@gmail.com">81khanmustafa@gmail.com</a></p>
-        <div class="social-icons">
- <a href="https://www.instagram.com/khan.mustafa" target="_blank" title="Instagram">
-                <i class="fab fa-instagram"></i>            </a>
-            </a>
+    </div> -->
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Photography & Film Portfolio</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+    <header>
+        <nav>   
+            <ul>
+                <li><a href="{{ url_for('films') }}">Films</a></li>
+                <li><a href="{{ url_for('projects') }}">Personal Projects</a></li>
+                <li><a href="{{ url_for('stills') }}">Stills</a></li>
+                <li><a href="{{ url_for('artworks') }}">About Us</a></li>
+            </ul>
+        </nav>
+    </header>
+
+
+    <div class="media-container">
+        {% for video in media['films'] %}
+        <div class="media">
+            <video controls>
+                <source src="{{ video }}" type="video/mp4">
+            </video>
         </div>
-    </footer>
-    
-    </body>
-    </html>
+        {% endfor %}
+    </div>

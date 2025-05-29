@@ -75,9 +75,12 @@ def get_related_images(image_name):
 
 
 # Routes
+
+
 @app.route('/')
 def home():
-    return render_template('website.html', media=get_media_files())
+    return redirect(url_for('stills'))
+
 
 
 @app.route('/films')

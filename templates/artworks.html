@@ -2,39 +2,45 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Artworks</title>
+    <title>About Us</title>
     <link rel="stylesheet" href="/static/style.css">
 
     <!-- Font Awesome for social media icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
+<body>
+
 <header>
     <nav>
         <ul>
+            <li><a href="{{ url_for('stills') }}">Stills</a></li>
             <li><a href="{{ url_for('films') }}">Films</a></li>
             <li><a href="{{ url_for('projects') }}">Personal Projects</a></li>
-            <li><a href="{{ url_for('stills') }}">Stills</a></li>
-            <li><a href="{{ url_for('artworks') }}">Artworks</a></li>
+            <li><a href="{{ url_for('artworks') }}">About Us</a></li>
         </ul>
     </nav>
 </header>
-<body>
-   
-    <div class="media-container">
-        {% for image in media['artworks'] %}
-        <div class="media">
-            <img src="{{ image }}" alt="Artwork">
-        </div>
-        {% endfor %}
+
+<main class="about-container">
+    <section class="about-content">
+        <h1>About Us</h1>
+        <p>Hello! I'm <strong>Mustafa Khan</strong>, a passionate visual artist specializing in photography, films, and mixed media art. This portfolio showcases a range of my creative work, from emotional still images to dynamic personal projects and films that tell stories through powerful visuals.</p>
+
+        <p>With a deep love for capturing moments and creating compelling narratives, I strive to produce work that resonates emotionally and artistically. My journey is one of continuous learning and exploration through lens, light, and expression.</p>
+
+        <p>If you're interested in collaborating, discussing creative ideas, or just want to say hello, feel free to reach out!</p>
+    </section>
+</main>
+
+<footer>
+    <p>&copy; 2025 Photography & Film Portfolio | Mustafa Khan</p>
+    <p>Contact: <a href="mailto:81khanmustafa@gmail.com">81khanmustafa@gmail.com</a></p>
+    <div class="social-icons">
+        <a href="https://www.instagram.com/khan.mustafa" target="_blank" title="Instagram">
+            <i class="fab fa-instagram"></i>
+        </a>
     </div>
-    <footer>
-        <p>&copy; 2025 Photography & Film Portfolio | Mustafa Khan</p>
-        <p>Contact: <a href="mailto:81khanmustafa@gmail.com">81khanmustafa@gmail.com</a></p>
-        <div class="social-icons">
- <a href="https://www.instagram.com/khan.mustafa" target="_blank" title="Instagram">
-                <i class="fab fa-instagram"></i>            </a>
-            </a>
-        </div>
-    </footer>
+</footer>
+
 </body>
 </html>
