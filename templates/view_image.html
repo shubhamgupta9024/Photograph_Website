@@ -2,6 +2,138 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <title>{{ image_name.split('.')[0].replace('_', ' ') }}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        .image-container {
+            text-align: center;
+            margin-top: 40px;
+        }
+        .image-container img {
+            max-width: 80%;
+            height: auto;
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .media-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .media {
+            position: relative;
+            width: 300px;
+        }
+
+        .media img {
+            width: 100%;
+            height: auto;
+            display: block;
+            border-radius: 8px;
+        }
+
+        .overlay-text {
+            position: absolute;
+            bottom: 0;
+            color: #fff;
+            width: 100%;
+            text-align: center;
+            padding: 5px;
+            background: rgba(0, 0, 0, 0.5);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            font-size: 20px;
+        }
+
+        .media:hover .overlay-text {
+            opacity: 1;
+        }
+
+        .all-stills-list {
+            margin: 40px auto;
+            text-align: center;
+        }
+
+        .all-stills-list a {
+            display: block;
+            font-size: 18px;
+            color: #333;
+            margin: 10px 0;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .all-stills-list a:hover {
+            color: #fdd450;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <ul>
+                <li><a href="{{ url_for('stills') }}">Stills</a></li>
+                <li><a href="{{ url_for('films') }}">Films</a></li>
+                <li><a href="{{ url_for('projects') }}">Personal Projects</a></li>
+                <li><a href="{{ url_for('artworks') }}">About</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="image-container">
+        <h2>{{ image_name.split('.')[0].replace('_', ' ') }}</h2>
+        <img src="{{ url_for('static', filename='uploads/stills/' + image_name) }}" alt="{{ image_name }}">
+    </div>
+
+    <h3 style="text-align:center; margin-top: 50px;">Related Images</h3>
+    <div class="media-container">
+        {% set base_name = image_name.split('.')[0] %}
+        {% for img in all_stills %}
+            {% if img.startswith(base_name + 'related') %}
+                <div class="media">
+                    <a href="{{ url_for('view_image', image_name=img) }}">
+                        <img src="{{ url_for('static', filename='uploads/stills/' + img) }}" alt="{{ img }}">
+                        <div class="overlay-text">{{ img.split('.')[0].replace('_', ' ') }}</div>
+                    </a>
+                </div>
+            {% endif %}
+        {% endfor %}
+    </div>
+
+    <h3 style="text-align:center; margin-top: 50px;">Other Stills</h3>
+    <div class="all-stills-list">
+        {% for img in all_stills %}
+            {% if not img.startswith(base_name + 'related') and img != image_name %}
+                <a href="{{ url_for('view_image', image_name=img) }}">
+                    {{ img.split('.')[0].replace('_', ' ') }}
+                </a>
+            {% endif %}
+        {% endfor %}
+    </div>
+
+    <footer>
+        <p>&copy; 2025 Photography & Film Portfolio | Mustafa Khan</p>
+        <p>Contact: <a href="mailto:81khanmustafa@gmail.com">81khanmustafa@gmail.com</a></p>
+    </footer>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
     <title>{{ image_name|replace_extension }}</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     <style>
@@ -95,26 +227,22 @@
                 <li><a href="{{ url_for('stills') }}">Stills</a></li>
             <li><a href="{{ url_for('films') }}">Films</a></li>
             <li><a href="{{ url_for('projects') }}">Personal Projects</a></li>
-            <li><a href="{{ url_for('artworks') }}">About Us</a></li>
+            <li><a href="{{ url_for('artworks') }}">About</a></li>
         </ul>
         </nav>
     </header>
 
     <div class="image-section">
-        <!-- <h2>Viewing: {{ image_name|replace_extension }}</h2> -->
 
         <div class="image-block">
-            <!-- <h3>Main Image</h3> -->
             <img src="{{ image }}" alt="{{ image_name }}">
         </div>
 
         <div class="image-block">
-            <!-- <h3>Related Images</h3> -->
             {% if images %}
                 {% for img in images %}
                     <div class="image-block">
                         <img src="{{ img }}" alt="Related Image">
-                        <!-- <div class="related-caption">{{ img.split('/')[-1].split('.')[0] }}</div> -->
                     </div>
                 {% endfor %}
             {% else %}
@@ -138,4 +266,4 @@
     </footer>
 
 </body>
-</html>
+</html> -->

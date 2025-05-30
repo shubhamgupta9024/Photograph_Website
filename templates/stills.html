@@ -3,9 +3,128 @@
 <head>
     <meta charset="UTF-8">
     <title>Stills</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+    <style>
+        .media-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .media {
+            position: relative;
+            width: 300px;
+        }
+
+        .media img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .overlay-text {
+            position: absolute;
+            bottom: 0;
+            color: #fff;
+            width: 100%;
+            text-align: center;
+            padding: 5px;
+            background: rgba(0, 0, 0, 0.5);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            font-size: 30px;
+        }
+
+        .media:hover .overlay-text {
+            opacity: 1;
+        }
+
+        .social-icons {
+            margin-top: 10px;
+            text-align: center;
+        }
+
+        .social-icons a {
+            margin: 0 10px;
+            color: #333;
+            font-size: 1.8em;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .social-icons a:hover {
+            color: #fdd450;
+        }
+
+        footer {
+            margin-top: 40px;
+            text-align: center;
+            padding: 10px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <ul>
+                <li><a href="{{ url_for('stills') }}">Stills</a></li>
+                <li><a href="{{ url_for('films') }}">Films</a></li>
+                <li><a href="{{ url_for('projects') }}">Personal Projects</a></li>
+                <li><a href="{{ url_for('artworks') }}">About</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    {% if not media['stills'] %}
+        <p>No still images available.</p>
+    {% else %}
+        <div class="media-container">
+            {% for image in media['stills'] %}
+                {% set image_filename = image.split('/')[-1] %}
+                <div class="media">
+                    <a href="{{ url_for('view_image', image_name=image_filename) }}">
+                        <img src="{{ image }}" alt="Still Image">
+                        <div class="overlay-text">
+                            {{ image_filename.split('.')[0].replace('_', ' ') }}
+                        </div>
+                    </a>
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    <footer>
+        <p>&copy; 2025 Photography & Film Portfolio | Mustafa Khan</p>
+        <p>Contact: <a href="mailto:81khanmustafa@gmail.com">81khanmustafa@gmail.com</a></p>
+        <div class="social-icons">
+            <a href="https://www.instagram.com/khan.mustafa" target="_blank" title="Instagram">
+                <i class="fab fa-instagram"></i>
+            </a>
+        </div>
+    </footer>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Stills</title>
     <link rel="stylesheet" href="/static/style.css">
     
-    <!-- Font Awesome CDN for social media icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
     <style>
@@ -68,7 +187,7 @@
                 <li><a href="{{ url_for('stills') }}">Stills</a></li>
             <li><a href="{{ url_for('films') }}">Films</a></li>
             <li><a href="{{ url_for('projects') }}">Personal Projects</a></li>
-            <li><a href="{{ url_for('artworks') }}">About Us</a></li>
+            <li><a href="{{ url_for('artworks') }}">About</a></li>
         </ul>
         </nav>
     </header>
@@ -111,4 +230,4 @@
         </div>
     </footer>
 </body>
-</html>
+</html> -->
