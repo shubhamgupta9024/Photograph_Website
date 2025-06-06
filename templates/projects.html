@@ -16,12 +16,12 @@
 
         .media {
             position: relative;
-            width: 300px;
+            width: 280px;
             max-height: 500px; /* allow tall vertical videos */
             overflow: hidden;
             border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.3);
-            background: black;
+            /* box-shadow: 0 0 10px rgba(0,0,0,0.3); */
+            /* background: black; */
         }
 
         .media video {
@@ -30,7 +30,7 @@
             max-height: 500px;
             display: block;
             object-fit: contain; /* show full video */
-            background: black;
+            /* background: black; */
         }
 
         .overlay-text {
@@ -99,7 +99,7 @@
     <div class="media-container">
         {% for video in media['projects'] %}
         <div class="media">
-            <video id="video-{{ loop.index }}" src="{{ video }}" muted loop playsinline controls></video>
+            <video id="video-{{ loop.index }}" src="{{ video }}" loop playsinline controls></video>
             <div class="overlay-text">
                 {{ video.split('/')[-1].split('.')[0].replace('_', ' ').title() }}
             </div>

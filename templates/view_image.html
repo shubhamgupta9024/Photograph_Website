@@ -1,39 +1,310 @@
 <!DOCTYPE html>
 <html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>{{ image_name.split('.')[0].replace('_', ' ') }}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+    <style>
+        body {
+            font-family: sans-serif;
+            background-color: #111;
+            color: white;
+            margin: 0;
+            padding: 0;
+        }
+
+        .media-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            padding: 40px;
+            justify-items: center;
+        }
+
+        .media {
+            width: 400px;
+            height: 530px;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            margin-top: 75px;
+            cursor: pointer;
+        }
+
+        .media img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .other-links {
+            margin: 40px auto;
+            text-align: center;
+            max-width: 600px;
+        }
+
+        .other-links a {
+            display: block;
+            font-size: 18px;
+            color: #ccc;
+            margin: 10px 0;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .other-links a:hover {
+            color: #fdd450;
+        }
+
+        nav ul {
+            list-style-type: none;
+            display: flex;
+            justify-content: center;
+            padding: 0;
+            margin: 0;
+            background-color: #000;
+        }
+
+        nav ul li {
+            margin: 0 20px;
+        }
+
+        nav ul li a {
+            text-decoration: none;
+            color: rgb(253, 193, 64);
+            padding: 15px;
+            display: block;
+        }
+
+        nav ul li a:hover {
+            background-color: #555;
+        }
+
+        header {
+            background-color: #333;
+            padding: 10px 0;
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px;
+            background-color: #333;
+            color: white;
+            margin-top: 50px;
+            transition: opacity 0.3s ease;
+        }
+
+        footer a {
+            color: white;
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+        h3 {
+            text-align: center;
+            margin-top: 50px;
+        }
+
+        /* Overlay styles */
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: rgba(0, 0, 0, 0.85);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 999;
+            flex-direction: column;
+        }
+
+        /* Wrap image and button together so close button can position relative to image */
+        .overlay-content {
+            position: relative;
+            display: inline-block;
+            margin-top: 50px;
+        }
+
+        .overlay img {
+            max-width: 400px;
+            max-height: 530px;
+            border-radius: 10px;
+            display: block;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 0px;
+            right: 5px;
+            font-size: 20px;
+            color: rgb(239, 233, 233);
+            background-color: transparent;
+            border: none;
+            cursor: pointer;
+            padding: 5px 10px;
+            z-index: 1000;
+            user-select: none;
+            text-shadow: 0 0 5px black;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <nav>
+            <ul>
+                <li><a href="{{ url_for('stills') }}">Stills</a></li>
+                <li><a href="{{ url_for('films') }}">Films</a></li>
+                <li><a href="{{ url_for('projects') }}">Personal Projects</a></li>
+                <li><a href="{{ url_for('artworks') }}">About</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="media-grid">
+        <!-- Main Image -->
+        <div class="media">
+            <img src="{{ url_for('static', filename='uploads/stills/' + image_name) }}" alt="{{ image_name }}" />
+        </div>
+
+        <!-- Related Images -->
+        {% set base_name = image_name.split('.')[0] %}
+        {% for img in all_stills %}
+            {% if img.startswith(base_name + 'related') %}
+            <div class="media">
+                <img src="{{ url_for('static', filename='uploads/stills/' + img) }}" alt="{{ img }}" />
+            </div>
+            {% endif %}
+        {% endfor %}
+    </div>
+
+   {% if 'related' not in image_name %}
+<h3>Other Stills</h3>
+<div class="other-links">
+    {% for img in all_stills %}
+        {% if img != image_name and 'related' not in img.lower() and 'whatsapp' not in img.lower() %}
+        <a href="{{ url_for('view_image', image_name=img) }}">
+            {{ img.split('.')[0].replace('_', ' ') }}
+        </a>
+        {% endif %}
+    {% endfor %}
+</div>
+{% endif %}
+
+
+    <!-- Overlay with close icon positioned top-right of the image -->
+    <div class="overlay" id="overlay">
+        <div class="overlay-content">
+            <button class="close-btn" onclick="closeOverlay()">×</button>
+            <img id="overlay-img" src="" alt="Full view" />
+        </div>
+    </div>
+
+    <footer id="footer">
+        <p>&copy; 2025 Photography & Film Portfolio | Mustafa Khan</p>
+        <p>Contact: <a href="mailto:81khanmustafa@gmail.com">81khanmustafa@gmail.com</a></p>
+    </footer>
+
+    <script>
+        function openOverlay(src) {
+            document.getElementById('overlay-img').src = src;
+            document.getElementById('overlay').style.display = 'flex';
+
+            document.querySelectorAll('.media').forEach(el => {
+                el.style.display = 'none';
+            });
+
+            // Hide footer when overlay is open
+            document.getElementById('footer').style.display = 'none';
+        }
+
+        function closeOverlay() {
+            document.getElementById('overlay').style.display = 'none';
+
+            document.querySelectorAll('.media').forEach(el => {
+                el.style.display = 'block';
+            });
+
+            // Show footer again when overlay closes
+            document.getElementById('footer').style.display = 'block';
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('.media img').forEach(img => {
+                img.addEventListener('click', () => {
+                    openOverlay(img.src);
+                });
+            });
+        });
+    </script>
+</body>
+
+</html>
+
+
+
+
+
+
+
+<!-- <!DOCTYPE html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>{{ image_name.split('.')[0].replace('_', ' ') }}</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     <style>
-        .image-container {
-            text-align: center;
-            margin-top: 40px;
+        body {
+            font-family: sans-serif;
         }
+
+        .image-container {
+            display: flex;
+            justify-content: center;
+            margin: 40px auto;
+            padding: 0;
+        }
+
         .image-container img {
-            max-width: 80%;
+            max-width: 90vw;
+            max-height: 85vh;
+            width: auto;
             height: auto;
+            object-fit: contain;
             border-radius: 10px;
+            margin-top: 80px;
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
         }
 
         .media-container {
             display: flex;
-            flex-wrap: wrap;
-            gap: 20px;
-            justify-content: center;
+            flex-direction: column;
+            align-items: center;
+            gap: 40px;
             margin-top: 20px;
         }
 
         .media {
             position: relative;
-            width: 300px;
+            width: 450px;
+            height: 600px;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
         }
 
         .media img {
             width: 100%;
-            height: auto;
+            height: 100%;
+            object-fit: cover;
             display: block;
-            border-radius: 8px;
         }
 
         .overlay-text {
@@ -46,7 +317,7 @@
             background: rgba(0, 0, 0, 0.5);
             opacity: 0;
             transition: opacity 0.3s ease;
-            font-size: 20px;
+            font-size: 18px;
         }
 
         .media:hover .overlay-text {
@@ -70,117 +341,6 @@
         .all-stills-list a:hover {
             color: #fdd450;
         }
-    </style>
-</head>
-<body>
-    <header>
-        <nav>
-            <ul>
-                <li><a href="{{ url_for('stills') }}">Stills</a></li>
-                <li><a href="{{ url_for('films') }}">Films</a></li>
-                <li><a href="{{ url_for('projects') }}">Personal Projects</a></li>
-                <li><a href="{{ url_for('artworks') }}">About</a></li>
-            </ul>
-        </nav>
-    </header>
-
-    <div class="image-container">
-        <h2>{{ image_name.split('.')[0].replace('_', ' ') }}</h2>
-        <img src="{{ url_for('static', filename='uploads/stills/' + image_name) }}" alt="{{ image_name }}">
-    </div>
-
-    <h3 style="text-align:center; margin-top: 50px;">Related Images</h3>
-    <div class="media-container">
-        {% set base_name = image_name.split('.')[0] %}
-        {% for img in all_stills %}
-            {% if img.startswith(base_name + 'related') %}
-                <div class="media">
-                    <a href="{{ url_for('view_image', image_name=img) }}">
-                        <img src="{{ url_for('static', filename='uploads/stills/' + img) }}" alt="{{ img }}">
-                        <div class="overlay-text">{{ img.split('.')[0].replace('_', ' ') }}</div>
-                    </a>
-                </div>
-            {% endif %}
-        {% endfor %}
-    </div>
-
-    <h3 style="text-align:center; margin-top: 50px;">Other Stills</h3>
-    <div class="all-stills-list">
-        {% for img in all_stills %}
-            {% if not img.startswith(base_name + 'related') and img != image_name %}
-                <a href="{{ url_for('view_image', image_name=img) }}">
-                    {{ img.split('.')[0].replace('_', ' ') }}
-                </a>
-            {% endif %}
-        {% endfor %}
-    </div>
-
-    <footer>
-        <p>&copy; 2025 Photography & Film Portfolio | Mustafa Khan</p>
-        <p>Contact: <a href="mailto:81khanmustafa@gmail.com">81khanmustafa@gmail.com</a></p>
-    </footer>
-</body>
-</html>
-
-
-
-
-
-
-
-
-
-<!-- <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>{{ image_name|replace_extension }}</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-    <style>
-        .image-section {
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-
-        .image-block {
-            margin-bottom: 30px;
-            text-align: center;
-        }
-
-        .image-block img {
-            width: 100%;
-            max-width: 700px;
-            border-radius: 8px;
-            border: 2px solid #ccc;
-        }
-
-        h2 {
-            text-align: center;
-            font-size: 26px;
-            margin-bottom: 15px;
-        }
-
-        footer {
-            text-align: center;
-            padding: 20px 0;
-            background-color: #333;
-            color: white;
-        }
-
-        footer a {
-            color: white;
-            text-decoration: none;
-        }
-
-        footer a:hover {
-            text-decoration: underline;
-        }
-
-        .related-caption {
-            margin-top: 10px;
-            font-weight: bold;
-        }
 
         nav ul {
             list-style-type: none;
@@ -188,7 +348,7 @@
             justify-content: center;
             padding: 0;
             margin: 0;
-            background-color: #000000;
+            background-color: #000;
         }
 
         nav ul li {
@@ -209,61 +369,77 @@
         header {
             background-color: #333;
             padding: 10px 0;
-            margin-bottom: 100px;
         }
 
-        .admin-note {
+        footer {
             text-align: center;
-            font-style: italic;
-            margin-top: 30px;
+            padding: 20px;
+            background-color: #333;
+            color: white;
+            margin-top: 50px;
+        }
+
+        footer a {
+            color: white;
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
         }
     </style>
 </head>
 <body>
-
     <header>
         <nav>
             <ul>
                 <li><a href="{{ url_for('stills') }}">Stills</a></li>
-            <li><a href="{{ url_for('films') }}">Films</a></li>
-            <li><a href="{{ url_for('projects') }}">Personal Projects</a></li>
-            <li><a href="{{ url_for('artworks') }}">About</a></li>
-        </ul>
+                <li><a href="{{ url_for('films') }}">Films</a></li>
+                <li><a href="{{ url_for('projects') }}">Personal Projects</a></li>
+                <li><a href="{{ url_for('artworks') }}">About</a></li>
+            </ul>
         </nav>
     </header>
 
-    <div class="image-section">
+    <div class="image-container">
+       
+        <img src="{{ url_for('static', filename='uploads/stills/' + image_name) }}" alt="{{ image_name }}">
+    </div>
 
-        <div class="image-block">
-            <img src="{{ image }}" alt="{{ image_name }}">
-        </div>
-
-        <div class="image-block">
-            {% if images %}
-                {% for img in images %}
-                    <div class="image-block">
-                        <img src="{{ img }}" alt="Related Image">
-                    </div>
-                {% endfor %}
-            {% else %}
-                <p>No related images found.</p>
+    <h3 style="text-align:center; margin-top: 50px;">
+    <div class="media-container">
+        {% set base_name = image_name.split('.')[0] %}
+        {% for img in all_stills %}
+            {% if img.startswith(base_name + 'related') %}
+                <div class="media">
+                    <a href="{{ url_for('view_image', image_name=img) }}">
+                        <img src="{{ url_for('static', filename='uploads/stills/' + img) }}" alt="{{ img }}">
+                    </a>
+                </div>
             {% endif %}
-        </div>
+        {% endfor %}
+    </div>
 
-        {% if not session.get('admin_logged_in') %}
-            <p class="admin-note">You must be logged in as an admin to upload new related stills.</p>
-        {% endif %}
+    {% if 'related' not in image_name %}
+    <h3 style="text-align:center; margin-top: 50px;">
+    <div class="all-stills-list">
+        {% for img in all_stills %}
+            {% if not img.startswith(base_name + 'related') and img != image_name %}
+                <a href="{{ url_for('view_image', image_name=img) }}">
+                    {{ img.split('.')[0].replace('_', ' ') }}
+                </a>
+            {% endif %}
+        {% endfor %}
+    </div>
 
-        <p style="text-align:center;"><a href="{{ url_for('stills') }}">← Back to Stills</a></p>
+  
+{% endif %}
+
     </div>
 
     <footer>
-        <p>&copy; 2025 Photography & Film Portfolio | Mustafa khan</p>
-        <p>Contact: <a href="81khanmustafa@gmail.com"></a></p>
-        <div class="social-icons">
-            <a href="https://www.instagram.com/khan.mustafa?igsh=eTM3ZjliMnFra3V3&utm_source=qr" target="_blank">Instagram</a> |
-            </div>
+        <p>&copy; 2025 Photography & Film Portfolio | Mustafa Khan</p>
+        <p>Contact: <a href="mailto:81khanmustafa@gmail.com">81khanmustafa@gmail.com</a></p>
     </footer>
-
 </body>
 </html> -->

@@ -16,21 +16,22 @@
 
         .media {
             position: relative;
-            width: 300px;
-            max-height: 500px; /* to accommodate tall vertical videos */
-            overflow: hidden;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.3);
-            background: black;
+            width: 280px;
+            max-height: 500px;
+            /* overflow: hidden; */
+            border-radius: 15px;
+            /* box-shadow: 0 0 10px rgba(0,0,0,0.3); */
+            /* background: black; */
         }
 
         .media video {
             width: 100%;
-            height: auto; /* maintain aspect ratio */
-            max-height: 500px; /* limit video height */
+            height: 550px;
+            max-height: 500px;
             display: block;
-            object-fit: contain; /* important: keep entire video visible */
-            background: black;
+            object-fit: contain;
+            /* background: black; */
+            cursor: pointer; /* optional for UX */
         }
 
         .overlay-text {
@@ -42,12 +43,12 @@
             color: white;
             font-size: 1.5rem;
             font-weight: bold;
-            background: rgba(0, 0, 0, 0.4);
+            /* background: rgba(0, 0, 0, 0.4); */
             display: flex;
             align-items: center;
             justify-content: center;
             text-align: center;
-            padding: 10px;
+            /* padding: 10px; */
             opacity: 0;
             transition: opacity 0.3s ease;
         }
@@ -75,11 +76,10 @@
             background-color: rgb(249, 219, 70);
         }
 
-        /* Optional: center container vertically if you want */
         body, html {
             margin: 0; padding: 0;
             height: 100%;
-            background: #121212;
+            /* background: #121212; */
             color: white;
             font-family: Arial, sans-serif;
         }
@@ -100,10 +100,10 @@
             <video
                 id="video-{{ loop.index }}"
                 src="{{ video }}"
-                muted
                 loop
                 playsinline
                 controls
+                onclick="enterFullscreenAndPlay(this)"
             ></video>
             <div class="overlay-text">
                 {{ video.split('/')[-1].split('.')[0].replace('_', ' ').title() }}
@@ -133,6 +133,17 @@
                 video.pause();
                 button.textContent = '▶';
             }
+        }
+
+        function enterFullscreenAndPlay(video) {
+            if (video.requestFullscreen) {
+                video.requestFullscreen();
+            } else if (video.webkitRequestFullscreen) {
+                video.webkitRequestFullscreen();
+            } else if (video.msRequestFullscreen) {
+                video.msRequestFullscreen();
+            }
+            video.play();
         }
     </script>
 </body>
