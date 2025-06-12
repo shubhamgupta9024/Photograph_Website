@@ -3,51 +3,86 @@
 <head>
     <meta charset="UTF-8" />
     <title>Personal Projects</title>
-    <link rel="stylesheet" href="static/style.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
-    <style>
+<style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color:black;
+            color: #fff;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        header {
+            background-color: #000;
+        }
+
+        nav ul {
+            display: flex;
+            justify-content: center;
+            list-style: none;
+            padding: 15px;
+            margin: 0;
+            flex-wrap: wrap;
+        }
+
+        nav ul li {
+            margin: 0 20px;
+        }
+
+        nav ul li a {
+            color: #fff;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 18px;
+        }
+
         .media-container {
             display: flex;
             flex-wrap: wrap;
-            gap: 20px;
+            gap: 30px;
             justify-content: center;
-            margin-top: 100px;
+            padding: 60px 20px 40px;
         }
 
         .media {
             position: relative;
-            width: 280px;
-            max-height: 500px; /* allow tall vertical videos */
+            width: 370px;
+            background-color: #1a1a1a;
+            border-radius: 16px;
             overflow: hidden;
-            border-radius: 8px;
-            /* box-shadow: 0 0 10px rgba(0,0,0,0.3); */
-            /* background: black; */
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+        }
+
+        .media:hover {
+            transform: translateY(-5px) scale(1.03);
+            box-shadow: 0 20px 40px rgba(255, 223, 120, 0.3);
         }
 
         .media video {
             width: 100%;
-            height: auto; /* maintain aspect ratio */
+            height: auto;
             max-height: 500px;
+            object-fit: cover;
             display: block;
-            object-fit: contain; /* show full video */
-            /* background: black; */
+            background-color: black;
         }
 
         .overlay-text {
             position: absolute;
-            top: 0;
-            left: 0;
+            bottom: 0;
             width: 100%;
-            height: 100%;
-            color: white;
-            font-size: 1.5rem;
-            font-weight: bold;
-            background: rgba(0, 0, 0, 0.4);
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            padding: 12px;
             text-align: center;
-            padding: 10px;
+            background: rgba(0, 0, 0, 0.6);
+            font-size: 18px;
+            font-weight: bold;
             opacity: 0;
             transition: opacity 0.3s ease;
         }
@@ -60,29 +95,139 @@
             position: absolute;
             bottom: 15px;
             right: 15px;
-            background-color: rgba(255, 255, 255, 0.7);
+            background-color: rgba(255, 255, 255, 0.85);
             border: none;
             border-radius: 50%;
             width: 40px;
             height: 40px;
             font-size: 18px;
-            font-weight: bold;
             cursor: pointer;
             transition: background 0.3s ease;
+            z-index: 10;
         }
 
         .play-button:hover {
-            background-color: rgb(250, 205, 92);
+            background-color: #fdd450;
         }
 
-        body, html {
-            margin: 0; padding: 0;
+        footer {
+            background-color:black;
+            color: #fff;
+            text-align: center;
+            padding: 20px 10px;
+            margin-top: auto;
+        }
+
+        footer p {
+            margin: 8px 0;
+        }
+
+        .social-icons {
+            margin-top: 10px;
+        }
+
+        .social-icons a {
+            margin: 0 10px;
+            color: #aaa;
+            font-size: 1.8em;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .social-icons a:hover {
+            color: #fdd450;
+        }
+
+        #fullscreen-modal {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color:black;
+            z-index: 10000;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        #fullscreen-overlay {
+            position: relative;
+            width: 100%;
+            max-width: 960px;
+            aspect-ratio: 16 / 9;
+        }
+
+        #fullscreen-video {
+            width: 100%;
             height: 100%;
-            background: #121212;
-            color: white;
-            font-family: Arial, sans-serif;
+            object-fit: contain;
+            background: black;
+            border-radius: 10px;
+        }
+
+        .modal-controls {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            display: flex;
+            gap: 10px;
+        }
+
+        .modal-controls button {
+            padding: 6px 10px;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            background: rgba(255, 255, 255, 0.8);
+            cursor: pointer;
+        }
+
+        .modal-controls button:hover {
+            background: #fdd450;
+        }
+
+        @media (max-width: 1024px) {
+            .media {
+                width: 45%;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .media {
+                width: 100%;
+                max-width: 320px;
+            }
+
+            nav ul li {
+                margin: 8px 10px;
+            }
+
+            .overlay-text {
+                font-size: 16px;
+                padding: 10px;
+            }
+
+            .play-button {
+                width: 36px;
+                height: 36px;
+                font-size: 16px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .modal-controls button {
+                padding: 4px 8px;
+                font-size: 14px;
+            }
+
+            #fullscreen-overlay {
+                aspect-ratio: auto;
+                height: 90vh;
+            }
         }
     </style>
+
 </head>
 <body>
     <header>
@@ -98,19 +243,19 @@
 
     <div class="media-container">
         {% for video in media['projects'] %}
-        <div class="media">
-            <video id="video-{{ loop.index }}" src="{{ video }}" loop playsinline controls></video>
+        <div class="media" onclick="showModal('{{ video }}')">
+            <video id="video-{{ loop.index }}" src="{{ video }}" loop playsinline muted></video>
             <div class="overlay-text">
                 {{ video.split('/')[-1].split('.')[0].replace('_', ' ').title() }}
             </div>
-            <button class="play-button" onclick="togglePlayPause('video-{{ loop.index }}', this)">▶</button>
+            <button class="play-button" onclick="event.stopPropagation(); togglePlayPause('video-{{ loop.index }}', this)">▶</button>
         </div>
         {% endfor %}
     </div>
 
     <footer>
         <p>&copy; 2025 Photography & Film Portfolio | Mustafa Khan</p>
-        <p>Contact: <a href="mailto:81khanmustafa@gmail.com">81khanmustafa@gmail.com</a></p>
+        <p>Contact: <a href="mailto:81khanmustafa@gmail.com" style="color:#fdd450;">81khanmustafa@gmail.com</a></p>
         <div class="social-icons">
             <a href="https://www.instagram.com/khan.mustafa" target="_blank" title="Instagram">
                 <i class="fab fa-instagram"></i>
@@ -118,7 +263,16 @@
         </div>
     </footer>
 
-    <!-- Play/Pause JavaScript -->
+    <!-- Fullscreen Modal Player -->
+    <div id="fullscreen-modal">
+        <div id="fullscreen-overlay">
+            <video id="fullscreen-video" controls></video>
+            <div class="modal-controls">
+                <button onclick="closeModal()">✖</button>
+            </div>
+        </div>
+    </div>
+
     <script>
         function togglePlayPause(videoId, button) {
             const video = document.getElementById(videoId);
@@ -130,6 +284,27 @@
                 button.textContent = '▶';
             }
         }
+
+        function showModal(src) {
+            const modal = document.getElementById("fullscreen-modal");
+            const video = document.getElementById("fullscreen-video");
+            video.src = src;
+            video.play();
+            modal.style.display = "flex";
+        }
+
+        function closeModal() {
+            const modal = document.getElementById("fullscreen-modal");
+            const video = document.getElementById("fullscreen-video");
+            video.pause();
+            video.src = "";
+            modal.style.display = "none";
+        }
     </script>
 </body>
 </html>
+
+
+ 
+
+

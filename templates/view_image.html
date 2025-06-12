@@ -5,6 +5,7 @@
     <meta charset="UTF-8" />
     <title>{{ image_name.split('.')[0].replace('_', ' ') }}</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <style>
         body {
             font-family: sans-serif;
@@ -73,7 +74,7 @@
 
         nav ul li a {
             text-decoration: none;
-            color: rgb(253, 193, 64);
+            color: white;
             padding: 15px;
             display: block;
         }
@@ -90,14 +91,14 @@
         footer {
             text-align: center;
             padding: 20px;
-            background-color: #333;
-            color: white;
+            background-color:black;
+            color: goldenrod;
             margin-top: 50px;
             transition: opacity 0.3s ease;
         }
 
         footer a {
-            color: white;
+            color: goldenrod;
             text-decoration: none;
         }
 
@@ -207,10 +208,15 @@
         </div>
     </div>
 
-    <footer id="footer">
-        <p>&copy; 2025 Photography & Film Portfolio | Mustafa Khan</p>
-        <p>Contact: <a href="mailto:81khanmustafa@gmail.com">81khanmustafa@gmail.com</a></p>
-    </footer>
+<footer>
+    <p>&copy; 2025 Photography & Film Portfolio | Mustafa Khan</p>
+    <p><a href="mailto:81khanmustafa@gmail.com">81khanmustafa@gmail.com</a></p>
+    <div class="social-icons">
+        <a href="https://instagram.com/khan.mustafa" target="_blank" title="Instagram">
+            <i class="fab fa-instagram"></i>
+        </a>
+    </div>
+</footer>
 
     <script>
         function openOverlay(src) {
@@ -254,192 +260,3 @@
 
 
 
-<!-- <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>{{ image_name.split('.')[0].replace('_', ' ') }}</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-    <style>
-        body {
-            font-family: sans-serif;
-        }
-
-        .image-container {
-            display: flex;
-            justify-content: center;
-            margin: 40px auto;
-            padding: 0;
-        }
-
-        .image-container img {
-            max-width: 90vw;
-            max-height: 85vh;
-            width: auto;
-            height: auto;
-            object-fit: contain;
-            border-radius: 10px;
-            margin-top: 80px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-        }
-
-        .media-container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 40px;
-            margin-top: 20px;
-        }
-
-        .media {
-            position: relative;
-            width: 450px;
-            height: 600px;
-            border-radius: 8px;
-            overflow: hidden;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-        }
-
-        .media img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            display: block;
-        }
-
-        .overlay-text {
-            position: absolute;
-            bottom: 0;
-            color: #fff;
-            width: 100%;
-            text-align: center;
-            padding: 5px;
-            background: rgba(0, 0, 0, 0.5);
-            opacity: 0;
-            transition: opacity 0.3s ease;
-            font-size: 18px;
-        }
-
-        .media:hover .overlay-text {
-            opacity: 1;
-        }
-
-        .all-stills-list {
-            margin: 40px auto;
-            text-align: center;
-        }
-
-        .all-stills-list a {
-            display: block;
-            font-size: 18px;
-            color: #333;
-            margin: 10px 0;
-            text-decoration: none;
-            transition: color 0.3s ease;
-        }
-
-        .all-stills-list a:hover {
-            color: #fdd450;
-        }
-
-        nav ul {
-            list-style-type: none;
-            display: flex;
-            justify-content: center;
-            padding: 0;
-            margin: 0;
-            background-color: #000;
-        }
-
-        nav ul li {
-            margin: 0 20px;
-        }
-
-        nav ul li a {
-            text-decoration: none;
-            color: rgb(253, 193, 64);
-            padding: 15px;
-            display: block;
-        }
-
-        nav ul li a:hover {
-            background-color: #555;
-        }
-
-        header {
-            background-color: #333;
-            padding: 10px 0;
-        }
-
-        footer {
-            text-align: center;
-            padding: 20px;
-            background-color: #333;
-            color: white;
-            margin-top: 50px;
-        }
-
-        footer a {
-            color: white;
-            text-decoration: none;
-        }
-
-        footer a:hover {
-            text-decoration: underline;
-        }
-    </style>
-</head>
-<body>
-    <header>
-        <nav>
-            <ul>
-                <li><a href="{{ url_for('stills') }}">Stills</a></li>
-                <li><a href="{{ url_for('films') }}">Films</a></li>
-                <li><a href="{{ url_for('projects') }}">Personal Projects</a></li>
-                <li><a href="{{ url_for('artworks') }}">About</a></li>
-            </ul>
-        </nav>
-    </header>
-
-    <div class="image-container">
-       
-        <img src="{{ url_for('static', filename='uploads/stills/' + image_name) }}" alt="{{ image_name }}">
-    </div>
-
-    <h3 style="text-align:center; margin-top: 50px;">
-    <div class="media-container">
-        {% set base_name = image_name.split('.')[0] %}
-        {% for img in all_stills %}
-            {% if img.startswith(base_name + 'related') %}
-                <div class="media">
-                    <a href="{{ url_for('view_image', image_name=img) }}">
-                        <img src="{{ url_for('static', filename='uploads/stills/' + img) }}" alt="{{ img }}">
-                    </a>
-                </div>
-            {% endif %}
-        {% endfor %}
-    </div>
-
-    {% if 'related' not in image_name %}
-    <h3 style="text-align:center; margin-top: 50px;">
-    <div class="all-stills-list">
-        {% for img in all_stills %}
-            {% if not img.startswith(base_name + 'related') and img != image_name %}
-                <a href="{{ url_for('view_image', image_name=img) }}">
-                    {{ img.split('.')[0].replace('_', ' ') }}
-                </a>
-            {% endif %}
-        {% endfor %}
-    </div>
-
-  
-{% endif %}
-
-    </div>
-
-    <footer>
-        <p>&copy; 2025 Photography & Film Portfolio | Mustafa Khan</p>
-        <p>Contact: <a href="mailto:81khanmustafa@gmail.com">81khanmustafa@gmail.com</a></p>
-    </footer>
-</body>
-</html> -->

@@ -4,114 +4,221 @@
     <meta charset="UTF-8">
     <title>Stills</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-    
-    <!-- Font Awesome for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
     <style>
-        .media-container {
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: black;
+            color: #000;
+        }
+
+        nav {
+            background-color: black;
+        }
+
+        nav ul {
+            display: flex;
+            justify-content: center;
+            list-style: none;
+            margin: 0;
+            padding: 15px;
+        }
+
+        nav ul li {
+            margin: 0 20px;
+        }
+
+        nav ul li a {
+            text-decoration: none;
+            color: white;
+            font-weight: bold;
+            font-size: 18px;
+        }
+
+        .masonry {
             display: flex;
             flex-wrap: wrap;
-            gap: 20px;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 100px;
+            padding: 20px;
         }
 
-        .media {
+        .image-container {
             position: relative;
-            width: 300px;
+            width: 450px;
+            height: 600px;
+            overflow: hidden;
+            cursor: pointer;
         }
 
-        .media img {
+        .image-container img {
             width: 100%;
-            height: auto;
+            height: 100%;
+            object-fit: cover;
             display: block;
+            transition: transform 0.3s ease;
         }
 
-        .overlay-text {
+        .image-container:hover img {
+            transform: scale(1.05);
+            opacity: 0.5;
+        }
+
+        .caption {
             position: absolute;
-            bottom: 0;
-            color: #fff;
+            bottom: 300px;
+            left: 0;
             width: 100%;
+            color: white;
             text-align: center;
-            padding: 5px;
-            background: rgba(0, 0, 0, 0.5);
+            padding: 10px;
+            font-size: 25px;
             opacity: 0;
             transition: opacity 0.3s ease;
-            font-size: 30px;
         }
 
-        .media:hover .overlay-text {
+        .image-container:hover .caption {
             opacity: 1;
         }
 
-        .social-icons {
-            margin-top: 10px;
+        footer {
+            background-color: black;
+            color: #fff;
             text-align: center;
+            padding: 20px 10px;
+        }
+
+        footer p {
+            margin: 8px 0;
         }
 
         .social-icons a {
-            margin: 0 10px;
-            color: #333;
-            font-size: 1.8em;
-            text-decoration: none;
+            color: #fff;
+            font-size: 24px;
+            margin: 10px;
             transition: color 0.3s ease;
         }
 
         .social-icons a:hover {
-            color: #fdd450;
+            color: #E1306C;
         }
 
-        footer {
-            margin-top: 40px;
-            text-align: center;
-            padding: 10px;
+        @media (max-width: 992px) {
+            .image-container {
+                width: 45vw;
+                height: 50vw;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .masonry {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .image-container {
+                width: 90vw;
+                height: 120vw;
+            }
+
+            nav ul {
+                flex-direction: column;
+            }
+
+            nav ul li {
+                margin: 10px 0;
+            }
+        }
+
+        .toast {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            color: black;
+            padding: 15px 30px;
+            font-size: 22px;
+            font-weight: bold;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
+            z-index: 9999;
+            opacity: 0;
+            animation: fadeInOut 3s forwards;
+        }
+
+        @keyframes fadeInOut {
+            0% { opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { opacity: 0; }
         }
     </style>
 </head>
 <body>
-    <header>
-        <nav>
-            <ul>
-                <li><a href="{{ url_for('stills') }}">Stills</a></li>
-                <li><a href="{{ url_for('films') }}">Films</a></li>
-                <li><a href="{{ url_for('projects') }}">Personal Projects</a></li>
-                <li><a href="{{ url_for('artworks') }}">About</a></li>
-            </ul>
-        </nav>
-    </header>
 
-    {% if not media['stills'] %}
-        <p>No still images available.</p>
-    {% else %}
-        <div class="media-container">
-            {% for image in media['stills'] %}
-                {% set image_filename = image.split('/')[-1] %}
-                <div class="media">
-                    <a href="{{ url_for('view_image', image_name=image_filename) }}">
-                        <img src="{{ image }}" alt="Still Image">
-                        <div class="overlay-text">
-                            {{ image_filename.split('.')[0].replace('_', ' ') }}
-                        </div>
-                    </a>
+<nav>
+    <ul>
+        <li><a href="{{ url_for('stills') }}">Stills</a></li>
+        <li><a href="{{ url_for('films') }}">Films</a></li>
+        <li><a href="{{ url_for('projects') }}">Personal Projects</a></li>
+        <li><a href="{{ url_for('artworks') }}">About</a></li>
+    </ul>
+</nav>
+
+{% if not media['stills'] %}
+    <p style="text-align:center; padding: 40px;">No still images available.</p>
+{% else %}
+    <div class="masonry">
+        {% for image in media['stills'] %}
+            {% set image_filename = image.split('/')[-1] %}
+            {% set image_title = image_filename.split('.')[0].replace('_', ' ') %}
+            <a href="{{ url_for('view_image', image_name=image_filename) }}" class="image-link">
+                <div class="image-container">
+                    <img src="{{ image }}" alt="{{ image_title }}">
+                    <div class="caption">{{ image_title }}</div>
                 </div>
-            {% endfor %}
-        </div>
-    {% endif %}
-
-    <footer>
-        <p>&copy; 2025 Photography & Film Portfolio | Mustafa Khan</p>
-        <p>Contact: <a href="mailto:81khanmustafa@gmail.com">81khanmustafa@gmail.com</a></p>
-        <div class="social-icons">
-            <a href="https://www.instagram.com/khan.mustafa" target="_blank" title="Instagram">
-                <i class="fab fa-instagram"></i>
             </a>
-        </div>
-    </footer>
+        {% endfor %}
+    </div>
+{% endif %}
+
+<footer>
+    <p>&copy; 2025 Photography & Film Portfolio | Mustafa Khan</p>
+    <p><a href="mailto:81khanmustafa@gmail.com">81khanmustafa@gmail.com</a></p>
+    <div class="social-icons">
+        <a href="https://instagram.com/khan.mustafa" target="_blank" title="Instagram">
+            <i class="fab fa-instagram"></i>
+        </a>
+    </div>
+</footer>
+
+<script>
+    document.querySelectorAll('.image-link').forEach(link => {
+        link.addEventListener('click', function (e) {
+            if (window.innerWidth <= 768) {
+                e.preventDefault();
+                const imageTitle = this.querySelector('.caption').textContent;
+                const url = this.getAttribute('href');
+
+                const toast = document.createElement('div');
+                toast.className = 'toast';
+                toast.textContent = imageTitle;
+                document.body.appendChild(toast);
+
+                setTimeout(() => {
+                    window.location.href = url;
+                }, 4000);
+            }
+        });
+    });
+</script>
+
 </body>
 </html>
-
-
-
-
 
 
 
@@ -123,111 +230,164 @@
 <head>
     <meta charset="UTF-8">
     <title>Stills</title>
-    <link rel="stylesheet" href="/static/style.css">
-    
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
     <style>
-        .media-container {
-            display: flex;      
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: black;
+            color: #000;
+        }
+
+        nav {
+            background-color: black;
+            /* border-bottom: 1px solid #ccc; */
+        }
+
+        nav ul {
+            display: flex;
+            justify-content: center;
+            list-style: none;
+            margin: 0;
+            padding: 15px;
+        }
+
+        nav ul li {
+            margin: 0 20px;
+        }
+
+        nav ul li a {
+            text-decoration: none;
+            color:white;
+            font-weight: bold;
+            font-size: 18px;
+        }
+
+        .masonry {
+            display: flex;
             flex-wrap: wrap;
-            gap: 20px;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 100px;
+            padding: 20px;
         }
 
-        .media {
+        .image-container {
             position: relative;
-            width: 300px;
+            width: 450px;
+            height: 600px;
+            overflow: hidden;
         }
 
-        .media img {
+        .image-container img {
             width: 100%;
-            height: auto;
+            height: 100%;
+            object-fit: cover;
             display: block;
+            transition: transform 0.3s ease;
         }
 
-        .overlay-text {
+        .image-container:hover img {
+            transform: scale(1.05);
+            opacity: 0.5;
+        }
+
+        .caption {
             position: absolute;
-            bottom: 0;
-            color: #fff;
+            bottom:300px;
+
+            left: 0;
             width: 100%;
+            /* background: rgba(0, 0, 0, 0.6); */
+            color: white;
             text-align: center;
-            padding: 5px;
+            padding: 10px;
+            font-size: 25px;
             opacity: 0;
             transition: opacity 0.3s ease;
-            font-size: 30px;
         }
 
-        .media:hover .overlay-text {
+        .image-container:hover .caption {
             opacity: 1;
         }
-
-        /* Social icon styles */
-        .social-icons {
-            margin-top: 10px;
+        footer {
+            background-color:black;
+            color: #fff;
             text-align: center;
+            padding: 20px 10px;
+            margin-top: auto;
         }
 
-        .social-icons a {
-            margin: 0 10px;
-            color: #333;
-            font-size: 1.8em;
-            text-decoration: none;
-            transition: color 0.3s ease;
+        footer p {
+            margin: 8px 0;
+        }
+        @media (max-width: 992px) {
+            .image-container {
+                width: 45vw;
+                height: 50vw;
+            }
         }
 
-        .social-icons a:hover {
-            color: #fdd450;
+        @media (max-width: 600px) {
+            .masonry {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .image-container {
+                width: 90vw;
+                height: 120vw;
+            }
+
+            nav ul {
+                flex-direction: column;
+            }
+
+            nav ul li {
+                margin: 10px 0;
+            }
         }
     </style>
 </head>
 <body>
-    <header>
-        <nav>
-            <ul>
-                <li><a href="{{ url_for('stills') }}">Stills</a></li>
+
+    <nav>
+        <ul>
+            <li><a href="{{ url_for('stills') }}">Stills</a></li>
             <li><a href="{{ url_for('films') }}">Films</a></li>
             <li><a href="{{ url_for('projects') }}">Personal Projects</a></li>
             <li><a href="{{ url_for('artworks') }}">About</a></li>
         </ul>
-        </nav>
-    </header>
-
-  
+    </nav>
 
     {% if not media['stills'] %}
-        <p>No still images available.</p>
+        <p style="text-align:center; padding: 40px;">No still images available.</p>
     {% else %}
-   <div class="media-container">
-    {% for image in media['stills'] %}
-    <div class="media">
-        <a href="{{ url_for('view_image', image_name=image.split('/')[-1]) }}">
-            <img src="{{ image }}" alt="Still Image">
-            <div class="overlay-text">{{ image.split('/')[-1].split('.')[0].replace('_', ' ') }}</div>
-        </a>
-    </div>
-    {% endfor %}
-</div>
-
-
-    <div style="display: flex; flex-wrap: wrap; gap: 15px;">
-        {% for image in images %}
-            <a href="{{ url_for('view_image', image_name=image) }}">
-                <img src="{{ url_for('static', filename='uploads/stills/' ~ image) }}" width="200">
-            </a>
-        {% endfor %}
-    </div>
+        <div class="masonry">
+            {% for image in media['stills'] %}
+                {% set image_filename = image.split('/')[-1] %}
+                {% set image_title = image_filename.split('.')[0].replace('_', ' ') %}
+                <a href="{{ url_for('view_image', image_name=image_filename) }}">
+                    <div class="image-container">
+                        <img src="{{ image }}" alt="{{ image_title }}">
+                        <div class="caption">{{ image_title }}</div>
+                    </div>
+                </a>
+            {% endfor %}
+        </div>
     {% endif %}
 
-    <footer>
-        <p>&copy; 2025 Photography & Film Portfolio | Mustafa Khan</p>
-        <p>Contact: <a href="mailto:81khanmustafa@gmail.com">81khanmustafa@gmail.com</a></p>
-        <div class="social-icons">
-            <a href="https://www.instagram.com/khan.mustafa" target="_blank" title="Instagram">
-                <i class="fab fa-instagram"></i>
-            </a>
-          
-            </a>
-        </div>
-    </footer>
+<footer>
+    <p>&copy; 2025 Photography & Film Portfolio | Mustafa Khan</p>
+    <p><a href="mailto:81khanmustafa@gmail.com">81khanmustafa@gmail.com</a></p>
+    <div class="social-icons">
+        <a href="https://instagram.com/khan.mustafa" target="_blank" title="Instagram">
+            <i class="fab fa-instagram"></i>
+        </a>
+    </div>
+</footer>
+
 </body>
 </html> -->
