@@ -49,13 +49,15 @@
 
         .about-content h1 {
             font-size: 2.5rem;
-            margin-bottom: 20px;
+            margin-bottom: 30px;
+            text-align: center;
         }
 
         .about-content p {
             font-size: 1.2rem;
             line-height: 1.6;
             margin-bottom: 20px;
+            text-align: justify;
         }
 
         footer {
@@ -89,10 +91,20 @@
         @media (max-width: 768px) {
             .about-content h1 {
                 font-size: 2rem;
+                margin-bottom: 20px;
             }
 
             .about-content p {
                 font-size: 1rem;
+            }
+
+            nav ul {
+                flex-wrap: wrap;
+                padding: 10px 5px;
+            }
+
+            nav ul li {
+                margin: 8px 10px;
             }
         }
     </style>
@@ -112,8 +124,7 @@
 
 <main class="about-container">
     <section class="about-content">
-
-
+        <h1>About Me</h1>
         <p>Hello! I'm <strong>Mustafa Khan</strong>, a passionate visual artist specializing in photography, films, and mixed media art. This portfolio showcases a range of my creative work, from emotional still images to dynamic personal projects and films that tell stories through powerful visuals.</p>
 
         <p>With a deep love for capturing moments and creating compelling narratives, I strive to produce work that resonates emotionally and artistically. My journey is one of continuous learning and exploration through lens, light, and expression.</p>

@@ -85,6 +85,7 @@
             font-weight: bold;
             opacity: 0;
             transition: opacity 0.3s ease;
+            color: #fff;
         }
 
         .media:hover .overlay-text {
@@ -195,8 +196,14 @@
 
         @media (max-width: 768px) {
             .media {
-                width: 100%;
+                width: 90%;
                 max-width: 320px;
+                margin: 0 auto;
+            }
+
+            .media-container {
+                padding: 20px 10px;
+                gap: 20px;
             }
 
             nav ul li {
@@ -206,6 +213,7 @@
             .overlay-text {
                 font-size: 16px;
                 padding: 10px;
+                opacity: 1 !important;
             }
 
             .play-button {
@@ -224,6 +232,20 @@
             #fullscreen-overlay {
                 aspect-ratio: auto;
                 height: 90vh;
+            }
+
+            .overlay-text {
+                font-size: 14px;
+                padding: 8px;
+                opacity: 1 !important;
+            }
+
+            .media {
+                width: 95%;
+            }
+
+            .media-container {
+                gap: 16px;
             }
         }
     </style>
@@ -302,312 +324,3 @@
     </script>
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-<!-- <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8" />
-    <title>Films</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
-    <style>
-        body {
-            margin: 0;
-            font-family: Arial, sans-serif;
-            background-color: #111;
-            color: #fff;
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
-        }
-
-        header {
-            background-color: #000;
-        }
-
-        nav ul {
-            display: flex;
-            justify-content: center;
-            list-style: none;
-            padding: 10px;
-            margin: 0;
-            flex-wrap: wrap;
-        }
-
-        nav ul li {
-            margin: 10px 20px;
-        }
-
-        nav ul li a {
-            color: #fff;
-            text-decoration: none;
-            font-weight: bold;
-            font-size: 1rem;
-        }
-
-        .media-container {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 20px;
-            justify-content: center;
-            padding: 60px 20px 40px;
-        }
-
-        .media {
-            position: relative;
-            width: 280px;
-            max-width: 100%;
-            overflow: hidden;
-            border-radius: 12px;
-            cursor: pointer;
-        }
-
-        .media:hover {
-            transform: scale(1.03);
-        }
-
-        .media video {
-            width: 100%;
-            height: auto;
-            max-height: 500px;
-            display: block;
-            object-fit: contain;
-            background-color: black;
-        }
-
-        .overlay-text {
-            position: absolute;
-            bottom: 0;
-            width: 100%;
-            padding: 10px;
-            text-align: center;
-            background: rgba(0, 0, 0, 0.5);
-            font-size: 18px;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-
-        .media:hover .overlay-text {
-            opacity: 1;
-        }
-
-        .play-button {
-            position: absolute;
-            bottom: 15px;
-            right: 15px;
-            background-color: rgba(255, 255, 255, 0.7);
-            border: none;
-            border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            font-size: 18px;
-            cursor: pointer;
-            transition: background 0.3s ease;
-            z-index: 10;
-        }
-
-        .play-button:hover {
-            background-color: rgb(250, 205, 92);
-        }
-
-        footer {
-            background-color: #000;
-            color: #fff;
-            text-align: center;
-            padding: 20px 10px;
-            margin-top: auto;
-        }
-
-        footer p {
-            margin: 8px 0;
-        }
-
-        .social-icons {
-            margin-top: 10px;
-        }
-
-        .social-icons a {
-            margin: 0 10px;
-            color: #aaa;
-            font-size: 1.8em;
-            text-decoration: none;
-            transition: color 0.3s ease;
-        }
-
-        .social-icons a:hover {
-            color: #fdd450;
-        }
-
-        #fullscreen-modal {
-            position: fixed;
-            top: 0; left: 0;
-            width: 100vw;
-            height: 100vh;
-            background-color: rgba(0, 0, 0, 0.9);
-            z-index: 10000;
-            display: none;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
-        }
-
-        #fullscreen-overlay {
-            position: relative;
-            width: 100%;
-            max-width: 960px;
-            aspect-ratio: 16 / 9;
-        }
-
-        #fullscreen-video {
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
-            background: black;
-            border-radius: 10px;
-        }
-
-        .modal-controls {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            display: flex;
-            gap: 10px;
-        }
-
-        .modal-controls button {
-            padding: 6px 10px;
-            font-size: 16px;
-            border: none;
-            border-radius: 5px;
-            background: rgba(255, 255, 255, 0.8);
-            cursor: pointer;
-        }
-
-        .modal-controls button:hover {
-            background: #fdd450;
-        }
-
-        @media (max-width: 1024px) {
-            .media {
-                width: 45%;
-            }
-        }
-
-        @media (max-width: 768px) {
-            nav ul li {
-                margin: 8px 10px;
-            }
-
-            .media {
-                width: 100%;
-                max-width: 320px;
-            }
-
-            .overlay-text {
-                font-size: 16px;
-                padding: 8px;
-            }
-
-            .play-button {
-                width: 36px;
-                height: 36px;
-                font-size: 16px;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .modal-controls button {
-                padding: 4px 8px;
-                font-size: 14px;
-            }
-
-            #fullscreen-overlay {
-                aspect-ratio: auto;
-                height: 90vh;
-            }
-        }
-    </style>
-</head>
-<body>
-    <header>
-        <nav>
-            <ul>
-                <li><a href="{{ url_for('stills') }}">Stills</a></li>
-                <li><a href="{{ url_for('films') }}">Films</a></li>
-                <li><a href="{{ url_for('projects') }}">Personal Projects</a></li>
-                <li><a href="{{ url_for('artworks') }}">About</a></li>
-            </ul>
-        </nav>
-    </header>
-
-    <div class="media-container">
-        {% for video in media['films'] %}
-        <div class="media" onclick="showModal('{{ video }}')">
-            <video id="video-{{ loop.index }}" src="{{ video }}" loop playsinline muted></video>
-            <div class="overlay-text">
-                {{ video.split('/')[-1].split('.')[0].replace('_', ' ').title() }}
-            </div>
-            <button class="play-button" onclick="event.stopPropagation(); togglePlayPause('video-{{ loop.index }}', this)">▶</button>
-        </div>
-        {% endfor %}
-    </div>
-
-    <footer>
-        <p>&copy; 2025 Photography & Film Portfolio | Mustafa Khan</p>
-        <p>Contact: <a href="mailto:81khanmustafa@gmail.com" style="color:#fdd450;">81khanmustafa@gmail.com</a></p>
-        <div class="social-icons">
-            <a href="https://www.instagram.com/khan.mustafa" target="_blank" title="Instagram">
-                <i class="fab fa-instagram"></i>
-            </a>
-        </div>
-    </footer>
-
-    <div id="fullscreen-modal">
-        <div id="fullscreen-overlay">
-            <video id="fullscreen-video" controls></video>
-            <div class="modal-controls">
-                <button onclick="closeModal()">✖</button>
-            </div>
-        </div>
-    </div>
-
-    <script>
-        function togglePlayPause(videoId, button) {
-            const video = document.getElementById(videoId);
-            if (video.paused) {
-                video.play();
-                button.textContent = '⏸';
-            } else {
-                video.pause();
-                button.textContent = '▶';
-            }
-        }
-
-        function showModal(src) {
-            const modal = document.getElementById("fullscreen-modal");
-            const video = document.getElementById("fullscreen-video");
-            video.src = src;
-            video.play();
-            modal.style.display = "flex";
-        }
-
-        function closeModal() {
-            const modal = document.getElementById("fullscreen-modal");
-            const video = document.getElementById("fullscreen-video");
-            video.pause();
-            video.src = "";
-            modal.style.display = "none";
-        }
-    </script>
-</body>
-</html> -->

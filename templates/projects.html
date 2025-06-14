@@ -6,11 +6,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
-<style>
+
+    <style>
         body {
             margin: 0;
             font-family: Arial, sans-serif;
-            background-color:black;
+            background-color: black;
             color: #fff;
             display: flex;
             flex-direction: column;
@@ -85,6 +86,7 @@
             font-weight: bold;
             opacity: 0;
             transition: opacity 0.3s ease;
+            color: #fff;
         }
 
         .media:hover .overlay-text {
@@ -111,7 +113,7 @@
         }
 
         footer {
-            background-color:black;
+            background-color: black;
             color: #fff;
             text-align: center;
             padding: 20px 10px;
@@ -143,7 +145,7 @@
             top: 0; left: 0;
             width: 100vw;
             height: 100vh;
-            background-color:black;
+            background-color: black;
             z-index: 10000;
             display: none;
             justify-content: center;
@@ -195,8 +197,14 @@
 
         @media (max-width: 768px) {
             .media {
-                width: 100%;
+                width: 90%;
                 max-width: 320px;
+                margin: 0 auto;
+            }
+
+            .media-container {
+                padding: 20px 10px;
+                gap: 20px;
             }
 
             nav ul li {
@@ -206,6 +214,7 @@
             .overlay-text {
                 font-size: 16px;
                 padding: 10px;
+                opacity: 1 !important;
             }
 
             .play-button {
@@ -225,10 +234,24 @@
                 aspect-ratio: auto;
                 height: 90vh;
             }
+
+            .overlay-text {
+                font-size: 14px;
+                padding: 8px;
+                opacity: 1 !important;
+            }
+
+            .media {
+                width: 95%;
+            }
+
+            .media-container {
+                gap: 16px;
+            }
         }
     </style>
-
 </head>
+
 <body>
     <header>
         <nav>
@@ -263,7 +286,7 @@
         </div>
     </footer>
 
-    <!-- Fullscreen Modal Player -->
+    <!-- Fullscreen Modal -->
     <div id="fullscreen-modal">
         <div id="fullscreen-overlay">
             <video id="fullscreen-video" controls></video>
@@ -303,8 +326,3 @@
     </script>
 </body>
 </html>
-
-
- 
-
-
