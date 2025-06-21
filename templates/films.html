@@ -1,326 +1,363 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <title>Films</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
-    <style>
-        body {
-            margin: 0;
-            font-family: Arial, sans-serif;
-            background-color: black;
-            color: #fff;
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
-        }
+  <meta charset="UTF-8" />
+  <title>Films</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: black;
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
 
-        header {
-            background-color: #000;
-        }
+    header {
+      background-color: #000;
+    }
 
-        nav ul {
-            display: flex;
-            justify-content: center;
-            list-style: none;
-            padding: 10px;
-            margin: 0;
-            flex-wrap: wrap;
-        }
+    nav ul {
+      display: flex;
+      justify-content: center;
+      list-style: none;
+      padding: 10px;
+      margin: 0;
+      flex-wrap: wrap;
+    }
 
-        nav ul li {
-            margin: 10px 20px;
-        }
+    nav ul li {
+      margin: 10px 20px;
+    }
 
-        nav ul li a {
-            color: #fff;
-            text-decoration: none;
-            font-weight: bold;
-            font-size: 18px;
-        }
+    nav ul li a {
+      color: #fff;
+      text-decoration: none;
+      font-weight: bold;
+      font-size: 18px;
+    }
 
-        .media-container {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 30px;
-            justify-content: center;
-            padding: 60px 20px 40px;
-        }
+    .media-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 30px;
+      justify-content: center;
+      padding: 60px 20px 40px;
+    }
 
-        .media {
-            position: relative;
-            width: 370px;
-            background-color: #1a1a1a;
-            border-radius: 16px;
-            overflow: hidden;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            cursor: pointer;
-        }
+    .media {
+      position: relative;
+      width: 370px;
+      background-color: #1a1a1a;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      cursor: pointer;
+    }
 
-        .media:hover {
-            transform: translateY(-5px) scale(1.03);
-            box-shadow: 0 20px 40px rgba(255, 223, 120, 0.3);
-        }
+    .media:hover {
+      transform: translateY(-5px) scale(1.03);
+      box-shadow: 0 20px 40px rgba(255, 223, 120, 0.3);
+    }
 
-        .media video {
-            width: 100%;
-            height: auto;
-            max-height: 500px;
-            object-fit: cover;
-            display: block;
-            background-color: black;
-        }
+    .media video {
+      width: 100%;
+      height: auto;
+      max-height: 500px;
+      object-fit: cover;
+      display: block;
+      background-color: black;
+    }
 
-        .overlay-text {
-            position: absolute;
-            bottom: 0;
-            width: 100%;
-            padding: 12px;
-            text-align: center;
-            background: rgba(0, 0, 0, 0.6);
-            font-size: 18px;
-            font-weight: bold;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-            color: #fff;
-        }
+    .overlay-text {
+      position: absolute;
+      bottom: 0;
+      width: 100%;
+      padding: 12px;
+      text-align: center;
+      background: rgba(0, 0, 0, 0.6);
+      font-size: 18px;
+      font-weight: bold;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      color: #fff;
+      pointer-events: none;
+    }
 
-        .media:hover .overlay-text {
-            opacity: 1;
-        }
+    .media:hover .overlay-text {
+      opacity: 1;
+    }
 
-        .play-button {
-            position: absolute;
-            bottom: 15px;
-            right: 15px;
-            background-color: rgba(255, 255, 255, 0.85);
-            border: none;
-            border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            font-size: 18px;
-            cursor: pointer;
-            transition: background 0.3s ease;
-            z-index: 10;
-        }
+    .play-button {
+      position: absolute;
+      bottom: 15px;
+      right: 15px;
+      background-color: rgba(255, 255, 255, 0.85);
+      border: none;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      font-size: 18px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+      z-index: 10;
+    }
 
-        .play-button:hover {
-            background-color: #fdd450;
-        }
+    .play-button:hover {
+      background-color: #fdd450;
+    }
 
-        footer {
-            background-color: black;
-            color: #fff;
-            text-align: center;
-            padding: 20px 10px;
-            margin-top: auto;
-        }
+    footer {
+      background-color: black;
+      color: #fff;
+      text-align: center;
+      padding: 20px 10px;
+      margin-top: auto;
+    }
 
-        footer p {
-            margin: 8px 0;
-        }
+    footer p {
+      margin: 8px 0;
+    }
 
-        .social-icons {
-            margin-top: 10px;
-        }
+    .social-icons {
+      margin-top: 10px;
+    }
 
-        .social-icons a {
-            margin: 0 10px;
-            color: #aaa;
-            font-size: 1.8em;
-            text-decoration: none;
-            transition: color 0.3s ease;
-        }
+    .social-icons a {
+      margin: 0 10px;
+      color: #aaa;
+      font-size: 1.8em;
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
 
-        .social-icons a:hover {
-            color: #fdd450;
-        }
+    .social-icons a:hover {
+      color: #fdd450;
+    }
 
-        #fullscreen-modal {
-            position: fixed;
-            top: 0; left: 0;
-            width: 100vw;
-            height: 100vh;
-            background-color: black; 
-            z-index: 10000;
-            display: none;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
-        }
+    #fullscreen-modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background-color: black;
+      z-index: 10000;
+      display: none;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
 
-        #fullscreen-overlay {
-            position: relative;
-            width: 100%;
-            max-width: 960px;
-            aspect-ratio: 16 / 9;
-        }
+    #fullscreen-overlay {
+      position: relative;
+      width: 100%;
+      max-width: 960px;
+      aspect-ratio: 16 / 9;
+    }
 
-        #fullscreen-video {
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
-            background: black;
-            border-radius: 10px;
-        }
+    #fullscreen-video {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      background: black;
+      border-radius: 10px;
+    }
 
-        .modal-controls {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            display: flex;
-            gap: 10px;
-        }
+    .modal-controls {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      display: flex;
+      gap: 10px;
+    }
 
-        .modal-controls button {
-            padding: 6px 10px;
-            font-size: 16px;
-            border: none;
-            border-radius: 5px;
-            background: rgba(255, 255, 255, 0.8);
-            cursor: pointer;
-        }
+    .modal-controls button {
+      padding: 6px 10px;
+      font-size: 16px;
+      border: none;
+      border-radius: 5px;
+      background: rgba(255, 255, 255, 0.8);
+      cursor: pointer;
+    }
 
-        .modal-controls button:hover {
-            background: #fdd450;
-        }
+    .modal-controls button:hover {
+      background: #fdd450;
+    }
 
-        @media (max-width: 1024px) {
-            .media {
-                width: 45%;
-            }
-        }
+    @media (max-width: 1024px) {
+      .media {
+        width: 45%;
+      }
+    }
 
-        @media (max-width: 768px) {
-            .media {
-                width: 90%;
-                max-width: 320px;
-                margin: 0 auto;
-            }
+    @media (max-width: 768px) {
+      .media {
+        width: 90%;
+        max-width: 320px;
+        margin: 0 auto;
+      }
 
-            .media-container {
-                padding: 20px 10px;
-                gap: 20px;
-            }
+      .media-container {
+        padding: 20px 10px;
+        gap: 20px;
+      }
 
-            nav ul li {
-                margin: 8px 10px;
-            }
+      nav ul li {
+        margin: 8px 10px;
+      }
 
-            .overlay-text {
-                font-size: 16px;
-                padding: 10px;
-                opacity: 1 !important;
-            }
+      .overlay-text {
+        font-size: 16px;
+        padding: 10px;
+        opacity: 0; /* allow JS to control it */
+      }
 
-            .play-button {
-                width: 36px;
-                height: 36px;
-                font-size: 16px;
-            }
-        }
+      .media:hover .overlay-text {
+        opacity: 0; /* disable hover effect */
+      }
 
-        @media (max-width: 480px) {
-            .modal-controls button {
-                padding: 4px 8px;
-                font-size: 14px;
-            }
+      .play-button {
+        width: 36px;
+        height: 36px;
+        font-size: 16px;
+      }
+    }
 
-            #fullscreen-overlay {
-                aspect-ratio: auto;
-                height: 90vh;
-            }
+    @media (max-width: 480px) {
+      .modal-controls button {
+        padding: 4px 8px;
+        font-size: 14px;
+      }
 
-            .overlay-text {
-                font-size: 14px;
-                padding: 8px;
-                opacity: 1 !important;
-            }
+      #fullscreen-overlay {
+        aspect-ratio: auto;
+        height: 90vh;
+      }
 
-            .media {
-                width: 95%;
-            }
+      .overlay-text {
+        font-size: 14px;
+        padding: 8px;
+      }
 
-            .media-container {
-                gap: 16px;
-            }
-        }
-    </style>
+      .media {
+        width: 95%;
+      }
+
+      .media-container {
+        gap: 16px;
+      }
+    }
+  </style>
 </head>
 <body>
-    <header>
-        <nav>
-            <ul>
-                <li><a href="{{ url_for('stills') }}">Stills</a></li>
-                <li><a href="{{ url_for('films') }}">Films</a></li>
-                <li><a href="{{ url_for('projects') }}">Personal Projects</a></li>
-                <li><a href="{{ url_for('artworks') }}">About</a></li>
-            </ul>
-        </nav>
-    </header>
+  <header>
+    <nav>
+      <ul>
+        <li><a href="{{ url_for('stills') }}">Stills</a></li>
+        <li><a href="{{ url_for('films') }}">Films</a></li>
+        <li><a href="{{ url_for('projects') }}">Personal Projects</a></li>
+        <li><a href="{{ url_for('artworks') }}">About</a></li>
+      </ul>
+    </nav>
+  </header>
 
-    <div class="media-container">
-        {% for video in media['films'] %}
-        <div class="media" onclick="showModal('{{ video }}')">
-            <video id="video-{{ loop.index }}" src="{{ video }}" loop playsinline muted></video>
-            <div class="overlay-text">
-                {{ video.split('/')[-1].split('.')[0].replace('_', ' ').title() }}
-            </div>
-            <button class="play-button" onclick="event.stopPropagation(); togglePlayPause('video-{{ loop.index }}', this)">▶</button>
-        </div>
-        {% endfor %}
+  <div class="media-container">
+    {% for video in media['films'] %}
+    <div class="media" onclick="showModal('{{ video }}')">
+      <video id="video-{{ loop.index }}" src="{{ video }}" loop playsinline muted></video>
+      <div class="overlay-text">
+        {{ video.split('/')[-1].split('.')[0].replace('_', ' ').title() }}
+      </div>
+      <button class="play-button" onclick="event.stopPropagation(); togglePlayPause('video-{{ loop.index }}', this)">▶</button>
     </div>
+    {% endfor %}
+  </div>
 
-    <footer>
-        <p>&copy; 2025 Photography & Film Portfolio | Mustafa Khan</p>
-        <p>Contact: <a href="mailto:81khanmustafa@gmail.com" style="color:#fdd450;">81khanmustafa@gmail.com</a></p>
-        <div class="social-icons">
-            <a href="https://www.instagram.com/khan.mustafa" target="_blank" title="Instagram">
-                <i class="fab fa-instagram"></i>
-            </a>
-        </div>
-    </footer>
-
-    <!-- Fullscreen Modal -->
-    <div id="fullscreen-modal">
-        <div id="fullscreen-overlay">
-            <video id="fullscreen-video" controls></video>
-            <div class="modal-controls">
-                <button onclick="closeModal()">✖</button>
-            </div>
-        </div>
+  <footer>
+    <p>&copy; 2025 Photography & Film Portfolio | Mustafa Khan</p>
+    <p>Contact: <a href="mailto:81khanmustafa@gmail.com" style="color:#fdd450;">81khanmustafa@gmail.com</a></p>
+    <div class="social-icons">
+      <a href="https://www.instagram.com/khan.mustafa" target="_blank" title="Instagram">
+        <i class="fab fa-instagram"></i>
+      </a>
     </div>
+  </footer>
 
-    <script>
-        function togglePlayPause(videoId, button) {
-            const video = document.getElementById(videoId);
-            if (video.paused) {
-                video.play();
-                button.textContent = '⏸';
-            } else {
-                video.pause();
-                button.textContent = '▶';
+  <div id="fullscreen-modal">
+    <div id="fullscreen-overlay">
+      <video id="fullscreen-video" controls></video>
+      <div class="modal-controls">
+        <button onclick="closeModal()">✖</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const tapTracker = {};
+
+    function togglePlayPause(videoId, button) {
+      const video = document.getElementById(videoId);
+      if (video.paused) {
+        video.play();
+        button.textContent = '⏸';
+      } else {
+        video.pause();
+        button.textContent = '▶';
+      }
+    }
+
+    function showModal(src) {
+      const isMobile = window.innerWidth <= 768;
+
+      if (isMobile) {
+        if (!tapTracker[src]) {
+          tapTracker[src] = true;
+
+          const allMedia = document.querySelectorAll(".media");
+          allMedia.forEach(div => {
+            const video = div.querySelector("video");
+            const overlay = div.querySelector(".overlay-text");
+
+            if (video && overlay) {
+              const videoSrc = video.getAttribute("src");
+              const fullVideoSrc = videoSrc.startsWith("/") ? location.origin + videoSrc : video.src;
+
+              if (fullVideoSrc === location.origin + src) {
+                overlay.style.opacity = "1";
+              } else {
+                overlay.style.opacity = "0";
+              }
             }
-        }
+          });
 
-        function showModal(src) {
-            const modal = document.getElementById("fullscreen-modal");
-            const video = document.getElementById("fullscreen-video");
-            video.src = src;
-            video.play();
-            modal.style.display = "flex";
-        }
+          setTimeout(() => {
+            tapTracker[src] = false;
+          }, 4000);
 
-        function closeModal() {
-            const modal = document.getElementById("fullscreen-modal");
-            const video = document.getElementById("fullscreen-video");
-            video.pause();
-            video.src = "";
-            modal.style.display = "none";
+          return;
         }
-    </script>
+      }
+
+      const modal = document.getElementById("fullscreen-modal");
+      const video = document.getElementById("fullscreen-video");
+      video.src = src;
+      video.play();
+      modal.style.display = "flex";
+    }
+
+    function closeModal() {
+      const modal = document.getElementById("fullscreen-modal");
+      const video = document.getElementById("fullscreen-video");
+      video.pause();
+      video.src = "";
+      modal.style.display = "none";
+    }
+  </script>
 </body>
 </html>
